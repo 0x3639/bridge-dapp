@@ -218,7 +218,7 @@ const constants = {
     },
   ],
 
-  GTM_ID: "GTM-TC768WT",
+  GTM_ID: "GTM-Zenon-Network-Is-An-Independent-Entity",
   /**
    * * @mehowbrainz twitter developer account
    */
