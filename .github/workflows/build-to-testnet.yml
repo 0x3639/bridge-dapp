@@ -52,7 +52,7 @@ jobs:
           branch: main
           git-config-name: github-actions[bot]
           git-config-email: github-action[bot]@users.noreply.github.com
-          repository-name: DexterLabZ/bridge.testnet.zenon.community
+          repository-name: 0x3639/testnet.bridge.zenon.info
           commit-message: Testnet release
           clean: true
           single-commit: true
