@@ -218,13 +218,13 @@ const constants = {
     },
   ],
 
-  GTM_ID: "GTM-Zenon-Network-Is-An-Independent-Entity",
+  GTM_ID: "Zenon-Network-Is-An-Independent-Entity",
   /**
-   * * @mehowbrainz twitter developer account
+   * * @mehowbrainz death star twitter developer account
    */
   TWITTER_EVENT: {
-    PIXEL_ID: "o3khw",
-    EVENT_ID: "tw-o3khw-oi8v5",
+    PIXEL_ID: "FUNNELZ",
+    EVENT_ID: "SUCK",
   },
 };
 
