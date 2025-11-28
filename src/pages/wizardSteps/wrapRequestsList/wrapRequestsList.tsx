@@ -13,13 +13,14 @@ import { SpinnerContext } from "../../../services/hooks/spinner/spinnerContext";
 import { clearActiveWrapRequest, storeSuccessInfo } from "../../../services/redux/requestsSlice";
 import { storeCurrentWizardFlowStep } from "../../../services/redux/wizardStatusSlice";
 import constants from "../../../utils/constants";
-import { simpleTokenType } from "../swapStep/swapStep";
+import { simpleNetworkType, simpleTokenType } from "../swapStep/swapStep";
 import newSwapSvg from "./../../../assets/icons/swap.svg";
 import discordLogo from "./../../../assets/logos/discord-logo.svg";
 import forumLogo from "./../../../assets/logos/forum-logo.svg";
 import telegramLogo from "./../../../assets/logos/telegram.svg";
 import twitterLogo from "./../../../assets/logos/twitter.svg";
 import useExternalNetwork from "../../../services/hooks/externalNetwork-provider/useExternalNetwork";
+import { curateWrapRequestsForSupernova } from "../../../utils/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const WrapRequestsList = ({ onStepSubmit = () => {} }) => {
@@ -124,11 +125,24 @@ const WrapRequestsList = ({ onStepSubmit = () => {} }) => {
       console.log("Getting requests for toAddress", toAddress);
       console.log("Getting requests for", _currentPage, _itemsPerPage, currentPage, itemsPerPage);
 
-      const getAllWrapTokenRequestsByToAddress = await zenon.embedded.bridge.getAllWrapTokenRequestsByToAddress(
-        toAddress,
-        _currentPage,
-        _itemsPerPage
-      );
+      let getAllWrapTokenRequestsByToAddress: { count: number; list: any[] } = { count: 0, list: [] };
+
+      if (globalConstants?.isSupernovaNetwork) {
+        getAllWrapTokenRequestsByToAddress =
+          await zenon.embedded.bridge.getAllWrapTokenRequestsByToAddressNetworkClassAndChainId(
+            toAddress,
+            globalConstants?.externalAvailableNetworks.find((n: simpleNetworkType) => n.isAvailable)?.networkClass,
+            parseInt(globalConstants?.supernovaChainId?.toString()),
+            _currentPage,
+            _itemsPerPage
+          );
+      } else {
+        getAllWrapTokenRequestsByToAddress = await zenon.embedded.bridge.getAllWrapTokenRequestsByToAddress(
+          toAddress,
+          _currentPage,
+          _itemsPerPage
+        );
+      }
       setMaxPages(Math.ceil(getAllWrapTokenRequestsByToAddress.count / _itemsPerPage));
       console.log("getAllWrapTokenRequestsByToAddress", getAllWrapTokenRequestsByToAddress);
       console.log(
@@ -165,7 +179,8 @@ const WrapRequestsList = ({ onStepSubmit = () => {} }) => {
 
       saveWrapRequestsToLocalStorage(mergedWrapRequests, oldRequests);
 
-      setRequestItems(mergedWrapRequests);
+      const curatedForSupernova = curateWrapRequestsForSupernova(mergedWrapRequests);
+      setRequestItems(curatedForSupernova);
     } catch (err) {
       console.error(err);
     } finally {
@@ -477,7 +492,16 @@ const WrapRequestsList = ({ onStepSubmit = () => {} }) => {
       signature[signature.length - 1] = signature[signature.length - 1] + 27;
       const newSig = signature.toString("hex");
 
-      console.log("Redeem params", wrapRequest.toAddress, tokenAddress, amount, "0x" + id, "0x" + newSig);
+      //
+      // Update redeemDelay of request
+      //
+      const redeemDelay = ((await contract.tokensInfo(wrapRequest.tokenAddress))?.redeemDelay || 1) + 1;
+      console.log("__wrap__redeemDelay", redeemDelay);
+      const estimatedBlockTimeInSeconds = await contract.estimatedBlockTime();
+      console.log("__wrap__estimatedBlockTimeInSeconds", estimatedBlockTimeInSeconds);
+
+      (wrapRequest.redeemDelayInSeconds = redeemDelay * estimatedBlockTimeInSeconds.toNumber()),
+        console.log("Redeem params", wrapRequest.toAddress, tokenAddress, amount, "0x" + id, "0x" + newSig);
       console.log("contract", contract);
       // const redeemResponse = await signedContract.redeem(
       //   wrapRequest.toAddress,
@@ -489,10 +513,14 @@ const WrapRequestsList = ({ onStepSubmit = () => {} }) => {
 
       const redeemTransactionParams = [wrapRequest.toAddress, tokenAddress, amount, "0x" + id, "0x" + newSig];
       console.log("redeemTransactionParams", redeemTransactionParams);
+
+      const functionToBeCalled = globalConstants.isSupernovaNetwork ? "redeemNative" : "redeem";
+      console.log("functionToBeCalled", functionToBeCalled);
+
       const redeemResponse = await externalNetworkClient.callContract(
         currentContractAddress,
         globalConstants.abiContract,
-        "redeem",
+        functionToBeCalled,
         redeemTransactionParams
       );
       console.log("redeemResponse", redeemResponse);
@@ -679,7 +707,8 @@ const WrapRequestsList = ({ onStepSubmit = () => {} }) => {
     console.log("updated localRequests", { ...localRequests });
 
     setRequestItems((reqItems) => {
-      const newReq = reqItems.map((req) => {
+      const curatedForSupernova = curateWrapRequestsForSupernova(reqItems);
+      const newReq = curatedForSupernova.map((req: any) => {
         if (req.id === wrapRequest.id) {
           req.status = wrapRequest.status;
           req.timestamp = wrapRequest.timestamp;
