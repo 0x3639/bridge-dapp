@@ -52,7 +52,7 @@ jobs:
           branch: main
           git-config-name: github-actions[bot]
           git-config-email: github-action[bot]@users.noreply.github.com
-          repository-name: DexterLabZ/bridge.supernova-testnet.zenon.community
+          repository-name: 0x3639/supernova-testnet.bridge.zenon.info
           commit-message: Supernova Testnet release
           clean: true
           single-commit: true

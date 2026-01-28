@@ -39,14 +39,21 @@ jobs:
 
       - name: Decode Environment Variables
         run: |
-          echo "${{ secrets.BRIDGE_VARIABLES }}" | base64 -d > .env
-          while IFS= read -r line; do
-            # Skip empty lines and lines starting with '#'
-            if [[ -z "$line" || "$line" =~ ^# ]]; then
-              continue
-            fi
-            export "$line"
-          done < .env
+          # BRIDGE_VARIABLES is optional for production (values are hardcoded in constants.tsx)
+          if [[ -n "${{ secrets.BRIDGE_VARIABLES }}" ]]; then
+            echo "${{ secrets.BRIDGE_VARIABLES }}" | base64 -d > .env
+            while IFS= read -r line; do
+              # Skip empty lines and lines starting with '#'
+              if [[ -z "$line" || "$line" =~ ^# ]]; then
+                continue
+              fi
+              export "$line"
+            done < .env
+            echo "Environment variables loaded from BRIDGE_VARIABLES secret"
+          else
+            echo "No BRIDGE_VARIABLES secret found - using hardcoded production values"
+            touch .env
+          fi
 
       - run: npm ci
       - run: npm run build-prod --if-present
