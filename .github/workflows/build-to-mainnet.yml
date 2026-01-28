@@ -66,7 +66,7 @@ jobs:
           branch: main
           git-config-name: github-actions[bot]
           git-config-email: github-action[bot]@users.noreply.github.com
-          repository-name: 0x3639/bridge.zenon.info
+          repository-name: 0x3639/bridge.0x3639.com
           commit-message: Mainnet release
           clean: true
           single-commit: true

@@ -52,7 +52,7 @@ jobs:
           branch: main
           git-config-name: github-actions[bot]
           git-config-email: github-action[bot]@users.noreply.github.com
-          repository-name: 0x3639/testnet.bridge.zenon.info
+          repository-name: 0x3639/testnet.bridge.0x3639.com
           commit-message: Testnet release
           clean: true
           single-commit: true
