@@ -10,10 +10,14 @@
   margin-top: clamp(20px, 8vw, 60px);
   border-radius: 15px;
   user-select: none;
-  transition: all 0.4s ease-out;
+  transition: all 0.2s ease-in-out;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .completed {
-    transition: all 0.4s ease-out;
+    transition: all 0.2s ease-in-out;
   }
 
   &:hover {
@@ -47,10 +51,10 @@
   }
 
   .step-content {
-    padding-top: clamp(10px, 10vw, 24px);
+    padding-top: clamp(8px, 6vw, 16px);
     padding-right: clamp(50px, 10vw, 82px);
     padding-left: clamp(50px, 10vw, 82px);
-    padding-bottom: clamp(10px, 10vw, 24px);
+    padding-bottom: clamp(8px, 6vw, 16px);
     border-radius: 15px;
   }
 

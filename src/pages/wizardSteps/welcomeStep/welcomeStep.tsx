@@ -6,8 +6,8 @@ const WelcomeStep = ({ onStepSubmit = (where: string) => {} }) => {
 
   return (
     <div className="mt-4 w-100">
-      <h1 className="text-center"> Welcome, alien 👽🖖 </h1>
-      <h2 className="w-100 text-center mb-5">What do you want to do?</h2>
+      <h1 className="text-center">Welcome to the Zenon Bridge</h1>
+      <h2 className="w-100 text-center mb-5">What would you like to do?</h2>
 
       <div className="d-flex w-100 justify-content-around mt-5 mb-4">
         <div className={`button primary text-white flex-1 mr-3 ml-5`} onClick={() => onStepSubmit("swap")}>

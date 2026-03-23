@@ -1597,7 +1597,7 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
 
       <div className={`extension-item mb-5 mt-4`}>
         <div className={`step-counter ${isSyriusConnected && "completed"}`}>1</div>
-        <div className="p-3">
+        <div className="pt-2 pb-2 pr-3 pl-3">
           <div className="pl-4">
             <div className="step-content text-center p-0 mb-2">
               {isSyriusConnected ? (
@@ -1691,7 +1691,7 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
       <div className={`extension-item ${!isSyriusConnected ? "disabled" : ""} mb-5 mt-4`}>
         {/* <div className={`extension-item ${!isSyriusConnected ? "" : ""} mb-5 mt-4`}> */}
         <div className={`step-counter ${isMetamaskConnected && "completed"}`}>2</div>
-        <div className="p-3">
+        <div className="pt-2 pb-2 pr-3 pl-3">
           <div className="pl-4">
             <div className="step-content text-center p-0 mb-2">
               {isMetamaskConnected ? (
@@ -1793,11 +1793,11 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
         <div className={`extension-item ${!isValidated ? "disabled" : ""} `}>
           <div className={`step-counter ${isValidated && "completed"}`}>3</div>
           <div className="step-content pr-4">
-            <div className="pr-5 pl-4">
-              <div className={`button primary text-white`} onClick={() => goNext("new")}>
+            <div className="d-flex gap-2 pr-5 pl-4">
+              <div className={`button primary text-white flex-1`} onClick={() => goNext("new")}>
                 New swap
               </div>
-              <div className={`button mt-2 accent text-white`} onClick={() => goNext("existing")}>
+              <div className={`button accent text-white flex-1`} onClick={() => goNext("existing")}>
                 Existing swap
               </div>
             </div>

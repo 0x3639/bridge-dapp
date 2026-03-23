@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CustomCursor from "../../components/custom-cursor/custom-cursor";
 import InfoBanner from "../../components/info-banner/info-banner";
 import NavBreadcrumbsMenu from "../../components/nav-breadcrumbs-menu/nav-breadcrumbs-menu";
 import NetworkDetails from "../../components/network-details/network-details";
@@ -12,7 +11,6 @@ import { InternalNetworkProvider } from "../../services/hooks/internalNetwork-pr
 import { ExternalNetworkProvider } from "../../services/hooks/externalNetwork-provider/externalNetworkContext";
 import { addBeforeUnloadEvents, removeBeforeUnloadEvents } from "../../services/pageHandlers/pageHandlers";
 import WizardLayout from "../wizardLayout/wizardLayout";
-import swirl from "./../../assets/swirl.svg";
 import "./mainLayout.scss";
 
 /**
@@ -45,11 +43,6 @@ const MainLayout = () => {
           <InternalNetworkProvider>
             <ExternalNetworkProvider>
               <NavBreadcrumbsMenu />
-              <div className="bg-shapes-container">
-                <img alt="bg-shapes" className="bg-shapes" src={require("./../../assets/bg-shapes.png")}></img>
-                <img alt="bg-swirl" className="bg-swirl" src={swirl}></img>
-              </div>
-              <CustomCursor></CustomCursor>
               <div className="responsive-container">
                 <WizardLayout />
                 <ToastContainer />

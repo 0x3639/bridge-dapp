@@ -7,7 +7,7 @@ const constants = {
   officialSyriusExtensionUrl: "https://github.com/DexterLabZ/syrius-extension/releases/tag/v0.1.9",
   officialSyriusWalletUrl: "https://github.com/zenon-network/syrius/releases/latest",
   officialMetamaskExtensionUrl: "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
-  officialBridgeCommunityUrl: "https://bridge.mainnet.zenon.community",
+  officialBridgeCommunityUrl: "https://bridge.0x3639.com",
   isMainNet: true,
   isDevNet: false,
   isTestNet: false,
