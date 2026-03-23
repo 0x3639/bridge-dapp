@@ -14,7 +14,6 @@ import { storeGlobalConstants } from "../../../services/redux/globalConstantsSli
 import { storeReferralCode } from "../../../services/redux/referralSlice";
 import { storeErcInfo, storeZenonInfo } from "../../../services/redux/walletSlice";
 import {
-  checkIfBridgeCanProcessRequests,
   checkMetamaskAvailability,
   checkSyriusAvailability,
   curateExternalNetworksForSupernova,
@@ -174,32 +173,6 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
           console.log("zenonInfo", zenonInfo);
           await internalNetworkClient.connectToNode(zenonInfo.nodeUrl);
         }
-      }
-
-      const isBridgeProcessingTransactions = await checkIfBridgeCanProcessRequests(zenon);
-      if (!isBridgeProcessingTransactions?.canProcessWrapRequests) {
-        toast("Bridge might be down and unable to process Wrap requests! Please be patient.", {
-          position: "bottom-center",
-          autoClose: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          type: "error",
-          theme: "dark",
-        });
-      }
-      if (!isBridgeProcessingTransactions?.canProcessUnwrapRequests) {
-        toast("Bridge might be down and unable to process Unwrap transactions! Please be patient.", {
-          position: "bottom-center",
-          autoClose: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          type: "error",
-          theme: "dark",
-        });
       }
 
       checkForAffiliationCodeFromNode(zenon);
@@ -840,10 +813,15 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
     let updatedConstants: any = {};
     Object.assign(updatedConstants, { ...globalConstants });
 
-    const getBridgeInfo = await zenon.embedded.bridge.getBridgeInfo();
-    console.log("getBridgeInfo", getBridgeInfo);
+    let getBridgeInfo;
+    try {
+      getBridgeInfo = await zenon.embedded.bridge.getBridgeInfo();
+      console.log("getBridgeInfo", getBridgeInfo);
+    } catch (err) {
+      console.warn("Could not fetch bridge info, continuing anyway:", err);
+    }
 
-    if (getBridgeInfo.halted) {
+    if (getBridgeInfo?.halted) {
       const showSpinner = handleSpinner(
         <>
           <div className="text-bold text-center mb-5 mt-4 warning p-3 small-border-radius">
@@ -858,7 +836,7 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
       throw Error("Bridge is currently unavailable!");
     }
 
-    if (getBridgeInfo.allowKeyGen) {
+    if (getBridgeInfo?.allowKeyGen) {
       const showSpinner = handleSpinner(
         <>
           <div className="text-bold text-center mb-5 mt-4 warning p-3 small-border-radius">
