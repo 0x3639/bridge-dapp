@@ -3,12 +3,13 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 450;
   font-size: 16px;
+  letter-spacing: 0.02em;
 }
 
 ::-moz-selection {
@@ -320,7 +321,7 @@ h1 {
   &::before {
     background: $primary-gradient-darker;
     transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 
   &::after {
@@ -361,7 +362,7 @@ h1 {
   &::before {
     background: $primary-gradient-darker;
     transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 
   &::after {
@@ -405,7 +406,7 @@ h1 {
   &::before {
     background: darken($color: #2f2f2f, $amount: 100);
     transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 
   &::after {
@@ -449,7 +450,7 @@ h1 {
   &::before {
     background: $accent-gradient;
     transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 
   &::after {
@@ -503,7 +504,7 @@ h1 {
   &::before {
     background: $dark;
     transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 
   &::after {
@@ -558,7 +559,7 @@ h1 {
   &::before {
     background: $secondary-gradient;
     transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 
   &::after {
@@ -615,7 +616,7 @@ h1 {
   &::before {
     background: $primary-gradient;
     transform: translate3d(0px, 0px, 0) scale(0.8);
-    filter: blur(22px);
+    filter: blur(16px);
   }
 }
 
@@ -811,12 +812,12 @@ h1 {
 
 .button {
   color: $white;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1em;
   font-size: 1em;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.4s ease-out;
+  transition: all 0.2s ease-in-out;
   user-select: none;
   display: block;
   box-sizing: border-box;
@@ -825,7 +826,7 @@ h1 {
 }
 
 .button:hover {
-  box-shadow: 0px 0px 18px 1px rgba(103, 230, 70, 0.65);
+  box-shadow: 0px 0px 14px 1px rgba(103, 230, 70, 0.45);
 }
 
 .thin-button {

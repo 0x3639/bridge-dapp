@@ -138,8 +138,8 @@ const WizardLayout = () => {
             </>
           ) : (
             <>
-              <div className="logo-white-part">NoM</div>
-              <div className="logo-green-part">Multichain</div>
+              <div className="logo-white-part">Zenon</div>
+              <div className="logo-green-part">Bridge</div>
             </>
           )}
         </div>

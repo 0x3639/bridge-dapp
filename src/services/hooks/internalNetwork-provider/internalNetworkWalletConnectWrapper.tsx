@@ -49,7 +49,7 @@ const initClient = async () => {
     metadata: {
       // name: document.title,
       // description: (document.querySelector('meta[name="description"]') as any)?.content,
-      name: "NoM Multichain",
+      name: "Zenon Bridge",
       description: "Bridge tokens, add and stake liquidity",
       url: window.location.host,
       icons: [window.location.origin + logoIcon],
