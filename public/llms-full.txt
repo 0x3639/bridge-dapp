@@ -1,0 +1,89 @@
+# Zenon Bridge — Full Technical Documentation
+
+> Cross-chain token bridge for the Zenon Network ecosystem
+
+## Overview
+
+Zenon Bridge is a React-based decentralized application that enables bidirectional token transfers between Zenon Network (a Layer-1 blockchain) and EVM-compatible chains (Ethereum, BSC). It uses a smart contract bridge with guardian validation to ensure secure cross-chain transfers.
+
+## Core Functionality
+
+### Token Wrapping (Zenon -> Ethereum)
+Users lock native ZTS (Zenon Token Standard) tokens on Zenon Network, and equivalent ERC-20 wrapped tokens are minted on Ethereum. The process involves:
+1. Sending tokens to the bridge contract on Zenon
+2. Bridge guardians validate the transaction
+3. Wrapped tokens are minted on the destination chain
+
+### Token Unwrapping (Ethereum -> Zenon)
+Users burn wrapped ERC-20 tokens on Ethereum, and native ZTS tokens are released on Zenon Network. The process involves:
+1. Burning wrapped tokens on Ethereum via the bridge contract
+2. Bridge guardians validate the burn
+3. Native tokens are released on Zenon Network
+
+### Liquidity Staking
+Users can stake LP (Liquidity Provider) tokens to earn rewards:
+1. Provide liquidity on a DEX
+2. Bridge LP tokens to Zenon Network
+3. Stake LP tokens in the staking contract
+4. Earn ZNN/QSR rewards
+
+## Supported Tokens
+
+| Zenon Token | Wrapped Token (ERC-20) | Description |
+|-------------|----------------------|-------------|
+| ZNN | wZNN | Zenon (native currency) |
+| QSR | wQSR | Quasar (fee/staking token) |
+
+## Wallet Support
+
+### Zenon Network Wallets
+- **Syrius Browser Extension**: Native Zenon wallet extension
+- **WalletConnect**: Cross-platform wallet connectivity
+
+### Ethereum/BSC Wallets
+- **MetaMask**: Browser extension wallet
+- **WalletConnect v2**: Mobile and desktop wallet support via Web3Modal
+
+## Architecture
+
+### Application Flow
+The app uses a wizard-based flow system with two main paths:
+
+**Swap Flow**: Welcome -> Agreement -> Connect Wallets -> Swap/Bridge -> Request History -> Success
+
+**Liquidity Staking Flow**: Welcome -> Agreement -> Connect Wallets -> Overview -> Add Liquidity -> Bridge LP Tokens -> Bridge History -> Stake -> Success -> Staking History
+
+### State Management
+Redux Toolkit manages application state across slices:
+- Wallet connections and account state
+- Network connection status for both chains
+- Wrap/unwrap request tracking and history
+- Wizard flow progress
+- Liquidity staking entries
+
+### Multi-Network Configuration
+The bridge supports multiple network environments:
+- **Production**: Zenon Mainnet + Ethereum Mainnet
+- **Staging**: Zenon Testnet + Ethereum Sepolia
+- **Development**: Local Zenon + Ethereum Sepolia
+- **BSC**: Binance Smart Chain testnet support
+
+## Smart Contracts
+
+The bridge uses smart contracts on both sides:
+- **Zenon side**: Built-in bridge embedded contract on Zenon Network
+- **Ethereum side**: ERC-20 bridge contract with guardian multi-sig validation
+
+## Security Model
+
+- Multi-guardian validation for cross-chain transfers
+- Time-locked operations for large transfers
+- Admin key management with threshold signatures
+- Unhalt mechanism for bridge recovery
+
+## Links
+
+- Website: https://bridge.0x3639.com
+- Source Code: https://github.com/0x3639/bridge-dapp
+- Zenon Network: https://zenon.network
+- Zenon Documentation: https://docs.zenon.org

@@ -1,0 +1,45 @@
+# Zenon Bridge
+
+> Cross-chain token bridge for the Zenon Network ecosystem
+
+Zenon Bridge is a decentralized application (dApp) that enables token wrapping, unwrapping, and swapping between Zenon Network and Ethereum/BSC blockchains.
+
+## What It Does
+
+- **Wrap**: Convert native Zenon tokens (ZNN, QSR) into ERC-20 wrapped tokens (wZNN, wQSR) on Ethereum
+- **Unwrap**: Convert wrapped ERC-20 tokens back to native Zenon tokens
+- **Swap**: Bridge tokens between Zenon Network and Ethereum in a single guided flow
+- **Liquidity Staking**: Stake LP tokens to earn rewards in the Zenon ecosystem
+
+## Supported Networks
+
+- Zenon Network (internal chain)
+- Ethereum Mainnet (external chain)
+- BSC (Binance Smart Chain)
+
+## Supported Tokens
+
+- ZNN (Zenon) <-> wZNN (Wrapped Zenon, ERC-20)
+- QSR (Quasar) <-> wQSR (Wrapped Quasar, ERC-20)
+
+## How It Works
+
+1. Connect a Zenon wallet (Syrius browser extension or WalletConnect)
+2. Connect an Ethereum wallet (MetaMask or WalletConnect)
+3. Choose to wrap, unwrap, or swap tokens
+4. Follow the guided wizard flow to complete the transaction
+5. Track request status in the bridge history
+
+## Technology
+
+- Built with React and TypeScript
+- Uses Web3.js and Ethers.js for blockchain interaction
+- Zenon SDK (znn-ts-sdk) for Zenon Network operations
+- WalletConnect v2 for cross-platform wallet support
+- Smart contract-based bridge with guardian validation
+
+## Links
+
+- Website: https://bridge.0x3639.com
+- Source Code: https://github.com/0x3639/bridge-dapp
+- Zenon Network: https://zenon.network

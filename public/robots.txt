@@ -1,3 +1,8 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
+
+Sitemap: https://bridge.0x3639.com/sitemap.xml
+
+# LLM-friendly content
+# https://llmstxt.org/
