@@ -51,12 +51,37 @@ const initClient = async () => {
       // description: (document.querySelector('meta[name="description"]') as any)?.content,
       name: "Zenon Bridge",
       description: "Bridge tokens, add and stake liquidity",
-      url: window.location.host,
+      url: window.location.origin,
       icons: [window.location.origin + logoIcon],
     },
   });
   return signClient;
 };
+
+const WC_REQUEST_TIMEOUT_MS = 30000;
+
+const ensureRelayConnected = async (signClient: Client) => {
+  if (!signClient.core.relayer.connected) {
+    console.warn("[WC-DEBUG] Relay disconnected, attempting to reconnect...");
+    try {
+      await signClient.core.relayer.transportOpen();
+      await delay(2000);
+      console.log("[WC-DEBUG] Relay reconnected:", signClient.core.relayer.connected);
+    } catch (err) {
+      console.error("[WC-DEBUG] Failed to reconnect relay:", err);
+    }
+  }
+};
+
+const withTimeout = <T,>(promise: Promise<T>, ms: number, context: string): Promise<T> => {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`[WC-DEBUG] ${context} timed out after ${ms}ms`)), ms)
+    ),
+  ]);
+};
+
 const initModal = async () => {
   try {
     ConfigCtrl.state = { ...defaultModalConfigCtrlState };
@@ -177,12 +202,22 @@ const connect = async (signClient: Client, onDismiss?: (reason: string) => unkno
         });
         const session = await approval();
         console.log("[CONNECTED] Session", session);
+        console.log("[WC-DEBUG] Session details after approval:", {
+          topic: session.topic,
+          namespaces: session.namespaces,
+          peer: session.peer,
+          acknowledged: session.acknowledged,
+          expiry: session.expiry,
+          relayConnected: signClient.core.relayer.connected,
+          userAgent: navigator.userAgent,
+        });
         wcModal.closeModal();
         //
         // We usually got some errors if not adding the delay.
         // The new pairings was not in the list as soon as the await finished
         //
         await delay(5000);
+        console.log("[WC-DEBUG] After 5s delay - relay connected:", signClient.core.relayer.connected);
 
         // Important !!!
         //
@@ -214,16 +249,29 @@ const connect = async (signClient: Client, onDismiss?: (reason: string) => unkno
 
 const getInfo = async (signClient: Client, session: SessionTypes.Struct) => {
   console.log("getInfo", signClient, session);
-  console.log("getInfo - session.topic", session.topic);
-
-  const result: InternalWalletInfo = await signClient.request({
+  console.log("[WC-DEBUG] getInfo - session details:", {
     topic: session.topic,
-    chainId: allNamespaces.zenon.chains[0],
-    request: {
-      method: "znn_info",
-      params: undefined,
-    },
+    expiry: session.expiry,
+    acknowledged: session.acknowledged,
+    relayConnected: signClient.core.relayer.connected,
+    userAgent: navigator.userAgent,
   });
+
+  await ensureRelayConnected(signClient);
+
+  console.log("[WC-DEBUG] Sending znn_info request on topic:", session.topic);
+  const result: InternalWalletInfo = await withTimeout(
+    signClient.request({
+      topic: session.topic,
+      chainId: allNamespaces.zenon.chains[0],
+      request: {
+        method: "znn_info",
+        params: undefined,
+      },
+    }),
+    WC_REQUEST_TIMEOUT_MS,
+    `znn_info request (topic: ${session.topic}, relay: ${signClient.core.relayer.connected})`
+  );
   console.log("znn_info res", result);
   return result;
 };
@@ -231,14 +279,21 @@ const getInfo = async (signClient: Client, session: SessionTypes.Struct) => {
 const signTransaction = async (signClient: Client, session: SessionTypes.Struct, params: any) => {
   console.log("signTransaction - params", params);
   console.log("signTransaction", signClient, session);
-  const signature = await signClient.request({
-    topic: session.topic,
-    chainId: allNamespaces.zenon.chains[0],
-    request: {
-      method: "znn_sign",
-      params: JSON.stringify(params.accountBlock),
-    },
-  });
+
+  await ensureRelayConnected(signClient);
+
+  const signature = await withTimeout(
+    signClient.request({
+      topic: session.topic,
+      chainId: allNamespaces.zenon.chains[0],
+      request: {
+        method: "znn_sign",
+        params: JSON.stringify(params.accountBlock),
+      },
+    }),
+    WC_REQUEST_TIMEOUT_MS,
+    `znn_sign request (topic: ${session.topic})`
+  );
   console.log("znn_sign result", signature);
 
   return signature;
@@ -247,17 +302,24 @@ const signTransaction = async (signClient: Client, session: SessionTypes.Struct,
 const sendTransaction = async (signClient: Client, session: SessionTypes.Struct, params: any) => {
   console.log("sendTransaction - params", params);
   console.log("sendTransaction", signClient, session);
-  const result = await signClient.request({
-    topic: session.topic,
-    chainId: allNamespaces.zenon.chains[0],
-    request: {
-      method: "znn_send",
-      params: {
-        fromAddress: params.fromAddress,
-        accountBlock: params.accountBlock,
+
+  await ensureRelayConnected(signClient);
+
+  const result = await withTimeout(
+    signClient.request({
+      topic: session.topic,
+      chainId: allNamespaces.zenon.chains[0],
+      request: {
+        method: "znn_send",
+        params: {
+          fromAddress: params.fromAddress,
+          accountBlock: params.accountBlock,
+        },
       },
-    },
-  });
+    }),
+    WC_REQUEST_TIMEOUT_MS,
+    `znn_send request (topic: ${session.topic})`
+  );
   console.log("znn_send result", result);
 
   const accountBlock = Primitives.AccountBlockTemplate.fromJson(result || "{}");
@@ -462,13 +524,13 @@ const registerEvents = (
     onDisconnect();
   });
 
-  // signClient.on("session_request", (args: any) => {
-  //   console.log(".on internal session_request", args);
-  // });
+  signClient.on("session_request", (args: any) => {
+    console.log("[WC-DEBUG] .on internal session_request", args);
+  });
 
-  // signClient.on("session_request_sent", (args: any) => {
-  //   console.log(".on internal session_request_sent", args);
-  // });
+  signClient.on("session_request_sent", (args: any) => {
+    console.log("[WC-DEBUG] .on internal session_request_sent", args);
+  });
 
   signClient.on("session_event", (args: any) => {
     // This is where chainIdChange and addressChange happens
