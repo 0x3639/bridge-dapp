@@ -150,7 +150,7 @@ const LiquidityOverviewStep: FC<{
           <div
             className={`step-content mt-5 pt-3 ${Object.keys(errors).length || !userOwnsTokens || !userSwappedToZts || !userAddedLiquidity ? "disabled" : ""
               }`}>
-            <div className={`button primary text-white `}>
+            <div className={`button primary `}>
               Go to Liquidity Staking
               <input className="ghost-over cursor-pointer" type="submit" name="submitButton"></input>
             </div>

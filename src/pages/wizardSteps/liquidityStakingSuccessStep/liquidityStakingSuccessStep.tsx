@@ -75,12 +75,12 @@ const LiquidityStakingSuccessStep: FC<{ onStepSubmit: () => void }> = ({ onStepS
           href={internalExplorerByChainId[internalNetworkConnectionDetails.chainIdentifier] + (successInfo?.id || "")}
           target="_blank"
           rel="noreferrer">
-          <div className={`button mt-2 accent text-white`} onClick={() => goToExplorer()}>
+          <div className={`button mt-2 accent`} onClick={() => goToExplorer()}>
             Discover transaction in the block explorer
           </div>
         </a>
 
-        <div className={`button mt-2 primary text-white`} onClick={() => onStepSubmit()}>
+        <div className={`button mt-2 primary`} onClick={() => onStepSubmit()}>
           Discover all the liquidity staking entries
         </div>
       </div>
