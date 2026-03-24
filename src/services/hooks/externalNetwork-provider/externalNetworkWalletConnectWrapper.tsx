@@ -48,7 +48,7 @@ const initClient = async () => {
       // description: (document.querySelector('meta[name="description"]') as any)?.content,
       name: "Zenon Bridge",
       description: "Bridge tokens, add and stake liquidity",
-      url: window.location.host,
+      url: window.location.origin,
       icons: [window.location.origin + logoIcon],
     },
   });
