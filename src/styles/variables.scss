@@ -1,23 +1,29 @@
-$primary: #00E721;
-$primary-gradient-start: #67E646;
-$primary-gradient-end: #26BA3F;
-$primary-gradient: linear-gradient(90.98deg, #67E646 -8.16%, #26BA3F 101.55%);
-$primary-gradient-darker: linear-gradient(90.98deg, #67E646 -8.16%, #26BA3F 101.55%);
+// Zenon brand colors
+$zenon-green: #6FF34D;
+$quasar-blue: #0061EB;
+$plasma-pink: #F91690;
+$syrius-green: #00D557;
 
-$secondary: #0009E7;
-$secondary-gradient-start: #446AEF;
-$secondary-gradient-end: #002BC2;
-$secondary-gradient: linear-gradient(90.98deg, #446AEF -8.16%, #002BC2 101.55%);
+$primary: $zenon-green;
+$primary-gradient-start: $zenon-green;
+$primary-gradient-end: $zenon-green;
+$primary-gradient: $zenon-green;
+$primary-gradient-darker: $zenon-green;
 
-$alert: #FF5C00;
-$alert-gradient-start: #FF3636;
-$alert-gradient-end: #FF5C00;
-$alert-gradient: linear-gradient(90.98deg, #FF3636 -8.16%, #FF5C00 101.55%);
+$secondary: $quasar-blue;
+$secondary-gradient-start: $quasar-blue;
+$secondary-gradient-end: $quasar-blue;
+$secondary-gradient: $quasar-blue;
 
-$accent: #FF005C;
-$accent-gradient-start: #7946E6;
-$accent-gradient-end: #FF005C;
-$accent-gradient: linear-gradient(90.98deg, #7946E6 -8.16%, #FF005C 101.55%);
+$alert: #EF4444;
+$alert-gradient-start: #EF4444;
+$alert-gradient-end: #EF4444;
+$alert-gradient: #EF4444;
+
+$accent: $plasma-pink;
+$accent-gradient-start: $plasma-pink;
+$accent-gradient-end: $plasma-pink;
+$accent-gradient: $plasma-pink;
 
 $wznn: #8ecc45;
 $wznn-gradient-start: #f2ba2f;

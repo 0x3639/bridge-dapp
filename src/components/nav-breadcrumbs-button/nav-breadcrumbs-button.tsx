@@ -27,10 +27,9 @@ const NavBreadcrumbsButton: FC<{
       <div
         key={uniqueKey}
         className={`nav-breadcrumbs-button-container animate-on-hover ${isActive ? "active" : ""} ${isCompleted ? "completed" : ""
-          }`}
-        tabIndex={0}>
+          }`}>
         <div
-          className={`nav-breadcrumbs-button primary-shadow-on-hover ${isDisabled ? "disabled" : ""}`}
+          className={`nav-breadcrumbs-button ${isDisabled ? "disabled" : ""}`}
           onClick={onClick}>
           <div className="show-on-smaller-screens">
             <div className="tooltip d-flex align-items-center">
