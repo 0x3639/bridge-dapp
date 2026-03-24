@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AddLiquidityStep from "../../pages/wizardSteps/addLiquidityStep/addLiquidityStep";
-import AgreementStep from "../../pages/wizardSteps/agreementStep/agreementStep";
-import ExtensionConnect from "../../pages/wizardSteps/extensionConnect/extensionConnect";
-import LiquidityOverviewStep from "../../pages/wizardSteps/liquidityOverviewStep/liquidityOverviewStep";
-import LiquidityStakingHistoryStep from "../../pages/wizardSteps/liquidityStakingHistoryStep/liquidityStakingHistoryStep";
-import LiquidityStakingStep from "../../pages/wizardSteps/liquidityStakingStep/liquidityStakingStep";
-import LiquidityStakingSuccessStep from "../../pages/wizardSteps/liquidityStakingSuccessStep/liquidityStakingSuccessStep";
-import RequestsStep from "../../pages/wizardSteps/requestsStep/requestsStep";
-import SwapStep from "../../pages/wizardSteps/swapStep/swapStep";
-import SwapSuccessStep from "../../pages/wizardSteps/swapSuccessStep/swapSuccessStep";
 import WelcomeStep from "../../pages/wizardSteps/welcomeStep/welcomeStep";
+
+const AddLiquidityStep = React.lazy(() => import("../../pages/wizardSteps/addLiquidityStep/addLiquidityStep"));
+const AgreementStep = React.lazy(() => import("../../pages/wizardSteps/agreementStep/agreementStep"));
+const ExtensionConnect = React.lazy(() => import("../../pages/wizardSteps/extensionConnect/extensionConnect"));
+const LiquidityOverviewStep = React.lazy(() => import("../../pages/wizardSteps/liquidityOverviewStep/liquidityOverviewStep"));
+const LiquidityStakingHistoryStep = React.lazy(() => import("../../pages/wizardSteps/liquidityStakingHistoryStep/liquidityStakingHistoryStep"));
+const LiquidityStakingStep = React.lazy(() => import("../../pages/wizardSteps/liquidityStakingStep/liquidityStakingStep"));
+const LiquidityStakingSuccessStep = React.lazy(() => import("../../pages/wizardSteps/liquidityStakingSuccessStep/liquidityStakingSuccessStep"));
+const RequestsStep = React.lazy(() => import("../../pages/wizardSteps/requestsStep/requestsStep"));
+const SwapStep = React.lazy(() => import("../../pages/wizardSteps/swapStep/swapStep"));
+const SwapSuccessStep = React.lazy(() => import("../../pages/wizardSteps/swapSuccessStep/swapSuccessStep"));
 import {
   flowTypes,
   liquidityFlowSteps,
@@ -145,6 +146,7 @@ const WizardLayout = () => {
         </div>
       </div>
       <div id="extension-approval-spinner-root" className="wizard-content">
+        <Suspense fallback={<div className="w-100" style={{minHeight: '200px'}}></div>}>
         {currentFlowStep === swapFlowSteps.Home && <WelcomeStep onStepSubmit={welcomeStepSubmit} />}
 
         {currentFlowStep === swapFlowSteps.Agreement && <AgreementStep onStepSubmit={agreementStepSubmit} />}
@@ -226,6 +228,7 @@ const WizardLayout = () => {
             <LiquidityStakingHistoryStep onStepSubmit={nextStep} />
           </div>
         )}
+        </Suspense>
       </div>
     </div>
   );

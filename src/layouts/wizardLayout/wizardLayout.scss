@@ -45,7 +45,7 @@
     .logo-white-part {
       font-size: clamp(0.9em, 3vw, 1em);
       font-weight: 600;
-      color: rgba(21, 21, 21, 0.6);
+      color: rgba(21, 21, 21, 0.75);
       letter-spacing: 3px;
       text-transform: uppercase;
 
@@ -58,7 +58,7 @@
     .logo-green-part {
       font-size: clamp(2.8em, 12vw, 3.5em);
       font-weight: 700;
-      color: $white;
+      color: $dark;
 
       &.supernova-logo-font {
         font-size: clamp(2.2em, 8vw, 3em);

@@ -13,54 +13,34 @@ import { addBeforeUnloadEvents, removeBeforeUnloadEvents } from "../../services/
 import WizardLayout from "../wizardLayout/wizardLayout";
 import "./mainLayout.scss";
 
-/**
- * * GTM SERVICE
- */
-import { useSelector } from "react-redux";
-
-import { GTMProvider } from "@elgorditosalsero/react-gtm-hook";
-
 const MainLayout = () => {
-  /**
-   * * GTM SERVICE
-   * @param { id: 'GTM-ID' }
-   */
-  const globalConstants = useSelector((state: any) => state.globalConstants);
-
-  const gtmParams = { id: globalConstants.GTM_ID };
-
   useEffect(() => {
     addBeforeUnloadEvents();
     return () => {
       removeBeforeUnloadEvents();
     };
-  });
+  }, []);
 
   return (
     <div className="main-layout">
-      <GTMProvider state={gtmParams}>
-        <SpinnerProvider>
-          <InternalNetworkProvider>
-            <ExternalNetworkProvider>
-              <NavBreadcrumbsMenu />
-              <div className="responsive-container">
-                <WizardLayout />
-                <ToastContainer />
-                <InfoBanner />
-                <WalletDetails />
-                <NetworkDetails />
-                <ReferralCodeInterpreter />
-              </div>
-            </ExternalNetworkProvider>
-          </InternalNetworkProvider>
-        </SpinnerProvider>
-        <div id="spinner-root"></div>
-      </GTMProvider>
+      <SpinnerProvider>
+        <InternalNetworkProvider>
+          <ExternalNetworkProvider>
+            <NavBreadcrumbsMenu />
+            <main className="responsive-container">
+              <WizardLayout />
+              <ToastContainer />
+              <InfoBanner />
+              <WalletDetails />
+              <NetworkDetails />
+              <ReferralCodeInterpreter />
+            </main>
+          </ExternalNetworkProvider>
+        </InternalNetworkProvider>
+      </SpinnerProvider>
+      <div id="spinner-root"></div>
     </div>
   );
 };
 
 export default MainLayout;
-function alertUser(this: Window, ev: BeforeUnloadEvent) {
-  throw new Error("Function not implemented.");
-}

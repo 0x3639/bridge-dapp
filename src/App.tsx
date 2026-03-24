@@ -7,8 +7,7 @@ import { store } from "./services/redux/store";
 import { Helmet } from "react-helmet";
 
 function App() {
-  // const disableConsoleLogs = process.env.REACT_APP_NETWORK_ENV === "production";
-  const disableConsoleLogs = false;
+  const disableConsoleLogs = process.env.REACT_APP_NETWORK_ENV === "production";
   if (disableConsoleLogs) {
     console.log = () => {};
     console.error = () => {};
