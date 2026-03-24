@@ -8,8 +8,8 @@ const NavMenuButton: FC<{ content: string; link: string; isActive: boolean; icon
   icon = {},
 }) => {
   return (
-    <div className={`nav-menu-button-container animate-on-hover ${isActive ? "active" : ""}`} tabIndex={0}>
-      <div className={`nav-menu-button primary-shadow-on-hover`}>
+    <div className={`nav-menu-button-container animate-on-hover ${isActive ? "active" : ""}`}>
+      <div className={`nav-menu-button`}>
         <span className="mr-1">{icon}</span>
         {content}
       </div>

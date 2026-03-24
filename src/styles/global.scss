@@ -15,12 +15,12 @@ body {
 ::-moz-selection {
   /* Code for Firefox */
   color: $white;
-  background: #39af38;
+  background: $primary;
 }
 
 ::selection {
   color: $white;
-  background: #39af38;
+  background: $primary;
 }
 
 body::-webkit-scrollbar {
@@ -34,7 +34,7 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #39af38;
+  background: $primary;
   border-radius: 30px;
   clip-path: polygon(5% 20%, 95% 5%, 92% 98%, 8% 90%);
   background-clip: current-box;
@@ -252,7 +252,7 @@ h1 {
     &::-moz-selection {
       /* Code for Firefox */
       color: $white;
-      background: #39af38;
+      background: $primary;
       -webkit-background-clip: $white;
       -webkit-text-fill-color: $white;
       background-clip: unset;
@@ -260,7 +260,7 @@ h1 {
 
     &::selection {
       color: $white;
-      background: #39af38;
+      background: $primary;
       -webkit-background-clip: $white;
       -webkit-text-fill-color: $white;
       background-clip: unset;
@@ -269,26 +269,9 @@ h1 {
 }
 
 .primary-on-hover {
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(86.63deg, transparent 0%, #67e646 0%, #26ba3f 100%) !important;
-    opacity: 0;
-    background-position-x: 0px;
-    background-size: 900px;
-    border-radius: inherit;
-
-    transition: background 0.3s ease-out, color 0.1s ease-out, opacity 0.3s ease-out;
-  }
-
-  &:hover::after {
-    opacity: 0;
-    background-position-x: -520px;
-    box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.6);
+  &:hover {
+    background: $primary;
+    color: $white;
   }
 }
 
@@ -304,170 +287,46 @@ h1 {
   position: relative;
   z-index: 0;
 
-  &::before,
-  &::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: all 0.3s ease-out;
-    opacity: 0;
-    border-radius: inherit;
-  }
-
-  &::before {
-    background: $primary-gradient-darker;
-    transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(16px);
-  }
-
-  &::after {
-    background: inherit;
-    opacity: inherit;
-    transition: all 0.3s ease-out;
-  }
-
   &:hover {
-    box-shadow: none !important;
-
-    &::before {
-      opacity: 0.55 !important;
-    }
+    box-shadow: 0px 0px 16px 2px rgba($primary, 0.3);
   }
 }
 
 .primary {
-  background: $primary-gradient-darker;
-  text-shadow: 1px 2px 14px rgb(0 0 0 / 65%);
+  background: $primary;
+  color: #151515;
+  text-shadow: none;
   position: relative;
   z-index: 0;
 
-  &::before,
-  &::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: all 0.3s ease-out;
-    opacity: 0;
-    border-radius: inherit;
-  }
-
-  &::before {
-    background: $primary-gradient-darker;
-    transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(16px);
-  }
-
-  &::after {
-    background: inherit;
-    transition: all 0.3s ease-out;
-  }
-
   &:hover {
-    box-shadow: none !important;
-
-    &:before {
-      opacity: 0.55 !important;
-    }
-
-    &::after {
-      opacity: 0.55 !important;
-    }
+    box-shadow: 0px 0px 16px 2px rgba($primary, 0.35);
+    filter: brightness(1.05);
   }
 }
 
 .secondary {
   background: #2f2f2f;
-  text-shadow: 1px 2px 14px rgb(0 0 0 / 65%);
+  text-shadow: none;
   position: relative;
   z-index: 0;
-
-  &::before,
-  &::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: all 0.3s ease-out;
-    opacity: 0;
-    border-radius: inherit;
-  }
-
-  &::before {
-    background: darken($color: #2f2f2f, $amount: 100);
-    transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(16px);
-  }
-
-  &::after {
-    background: inherit;
-    transition: all 0.3s ease-out;
-  }
+  border: 1px solid rgba(255, 255, 255, 0.07);
 
   &:hover {
-    box-shadow: none !important;
-
-    &:before {
-      opacity: 0.8 !important;
-    }
-
-    &::after {
-      opacity: 0.8 !important;
-    }
+    box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.4);
+    background: #363636;
   }
 }
 
 .accent {
-  background: $accent-gradient;
-  text-shadow: 1px 2px 14px rgb(0 0 0 / 65%);
+  background: $accent;
+  text-shadow: none;
   position: relative;
   z-index: 0;
 
-  &::before,
-  &::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: all 0.3s ease-out;
-    opacity: 0;
-    border-radius: inherit;
-  }
-
-  &::before {
-    background: $accent-gradient;
-    transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(16px);
-  }
-
-  &::after {
-    background: inherit;
-    transition: all 0.3s ease-out;
-  }
-
   &:hover {
-    box-shadow: none !important;
-
-    &:before {
-      opacity: 0.7 !important;
-    }
-
-    &::after {
-      opacity: 0.7 !important;
-    }
+    box-shadow: 0px 0px 16px 2px rgba($accent, 0.35);
+    filter: brightness(1.1);
   }
 }
 
@@ -485,112 +344,41 @@ h1 {
   top: 50%;
   transform: translate(0%, -50%);
 
-  z-index: 0;
-
-  &::before,
-  &::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: all 0.3s ease-out;
-    opacity: 0;
-    border-radius: inherit;
-  }
-
-  &::before {
-    background: $dark;
-    transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(16px);
-  }
-
-  &::after {
-    background: inherit;
-    transition: all 0.3s ease-out;
-  }
-
   &:hover {
-    box-shadow: none !important;
-    background: $alert-gradient;
-
-    &:before {
-      background: $alert-gradient;
-      opacity: 0.55 !important;
-    }
-
-    &::after {
-      opacity: 0.55 !important;
-    }
+    background: $alert;
   }
 }
 
 .alive-accent {
-  background: radial-gradient($accent-gradient-start, $accent-gradient-end);
+  background: $accent;
 
   &:hover {
-    animation: translate-bg 5s infinite ease-in-out;
     box-shadow: 0px 0px 10px 5px rgba($accent, 0.3);
   }
 }
 
 .blue {
-  background: $secondary-gradient;
-  text-shadow: 1px 2px 14px rgb(0 0 0 / 65%);
+  background: $secondary;
+  text-shadow: none;
   position: relative;
   z-index: 0;
 
-  &::before,
-  &::after {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: all 0.3s ease-out;
-    opacity: 0;
-    border-radius: inherit;
-  }
-
-  &::before {
-    background: $secondary-gradient;
-    transform: translate3d(0px, 0px, 0) scale(1.06);
-    filter: blur(16px);
-  }
-
-  &::after {
-    background: inherit;
-    transition: all 0.3s ease-out;
-  }
-
   &:hover {
-    box-shadow: none !important;
-
-    &:before {
-      opacity: 0.9 !important;
-    }
-
-    &::after {
-      opacity: 0.9 !important;
-    }
+    box-shadow: 0px 0px 16px 2px rgba($secondary, 0.35);
+    filter: brightness(1.1);
   }
 }
 
 .alive-blue {
-  background: radial-gradient(#446aef, #002bc2);
+  background: $secondary;
 
   &:hover {
-    animation: translate-bg 5s infinite ease-in-out;
-    box-shadow: 0px 0px 10px 5px rgba(68, 86, 230, 0.3);
+    box-shadow: 0px 0px 10px 5px rgba($secondary, 0.3);
   }
 }
 
 .green {
-  background: $primary-gradient-darker;
+  background: $primary;
 }
 
 .pulse-green-shadow {
@@ -629,7 +417,7 @@ h1 {
   &::-moz-selection {
     /* Code for Firefox */
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -637,7 +425,7 @@ h1 {
 
   &::selection {
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -653,7 +441,7 @@ h1 {
   &::-moz-selection {
     /* Code for Firefox */
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -661,7 +449,7 @@ h1 {
 
   &::selection {
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -677,7 +465,7 @@ h1 {
   &::-moz-selection {
     /* Code for Firefox */
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -685,7 +473,7 @@ h1 {
 
   &::selection {
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -701,7 +489,7 @@ h1 {
   &::-moz-selection {
     /* Code for Firefox */
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -709,7 +497,7 @@ h1 {
 
   &::selection {
     color: $white;
-    background: #39af38;
+    background: $primary;
     -webkit-background-clip: $white;
     -webkit-text-fill-color: $white;
     background-clip: unset;
@@ -826,7 +614,7 @@ h1 {
 }
 
 .button:hover {
-  box-shadow: 0px 0px 14px 1px rgba(103, 230, 70, 0.45);
+  box-shadow: 0px 0px 14px 1px rgba($primary, 0.3);
 }
 
 .thin-button {

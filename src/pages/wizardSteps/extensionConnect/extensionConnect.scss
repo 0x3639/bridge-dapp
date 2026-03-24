@@ -6,9 +6,10 @@
 
 .extension-item {
   position: relative;
-  background: $black;
+  background: #1a1a1a;
   margin-top: clamp(20px, 8vw, 60px);
   border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
   user-select: none;
   transition: all 0.2s ease-in-out;
   min-height: 120px;
