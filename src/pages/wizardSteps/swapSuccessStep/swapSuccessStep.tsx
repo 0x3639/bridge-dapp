@@ -233,7 +233,7 @@ const SwapSuccessStep: FC<{ onStepSubmit: () => void }> = ({ onStepSubmit = () =
             href={externalExplorerByChainId[successInfo?.chainId] + "0x" + (successInfo?.transactionHash || "")}
             target="_blank"
             rel="noreferrer">
-            <div className={`button mt-2 accent text-white`} onClick={() => goToExplorer()}>
+            <div className={`button mt-2 accent`} onClick={() => goToExplorer()}>
               See transaction in block explorer
             </div>
           </a>
@@ -243,17 +243,17 @@ const SwapSuccessStep: FC<{ onStepSubmit: () => void }> = ({ onStepSubmit = () =
             href={internalExplorerByChainId[internalNetworkConnectionDetails.chainIdentifier] + (successInfo?.id || "")}
             target="_blank"
             rel="noreferrer">
-            <div className={`button mt-2 accent text-white`} onClick={() => goToExplorer()}>
+            <div className={`button mt-2 accent`} onClick={() => goToExplorer()}>
               See transaction in block explorer
             </div>
           </a>
         )}
         {wizardStatus.metaFlowType === flowTypes.LiquidityStaking && wizardStatus.currentFlowType === flowTypes.Swap ? (
-          <div className={`button mt-2 primary text-white`} onClick={() => onStepSubmit()}>
+          <div className={`button mt-2 primary`} onClick={() => onStepSubmit()}>
             Continue to staking liquidity
           </div>
         ) : (
-          <div className={`button mt-2 primary text-white`} onClick={() => onStepSubmit()}>
+          <div className={`button mt-2 primary`} onClick={() => onStepSubmit()}>
             Start new swap
           </div>
         )}

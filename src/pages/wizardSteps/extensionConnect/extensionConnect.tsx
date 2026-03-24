@@ -1784,7 +1784,7 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
       {isLiquidityFlow ? (
         <div className={`extension-item-mt ${!isValidated ? "disabled" : ""} `}>
           <div className="step-content">
-            <div className={`button primary text-white`} onClick={() => goNext("")}>
+            <div className={`button primary`} onClick={() => goNext("")}>
               Next
             </div>
           </div>
@@ -1794,10 +1794,10 @@ const ExtensionConnect = ({ onStepSubmit = (where: string) => {}, isLiquidityFlo
           <div className={`step-counter ${isValidated && "completed"}`}>3</div>
           <div className="step-content pr-4">
             <div className="d-flex gap-2 pr-5 pl-4">
-              <div className={`button primary text-white flex-1`} onClick={() => goNext("new")}>
+              <div className={`button primary flex-1`} onClick={() => goNext("new")}>
                 New swap
               </div>
-              <div className={`button accent text-white flex-1`} onClick={() => goNext("existing")}>
+              <div className={`button accent flex-1`} onClick={() => goNext("existing")}>
                 Existing swap
               </div>
             </div>

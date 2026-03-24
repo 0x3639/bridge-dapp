@@ -10,11 +10,11 @@ const WelcomeStep = ({ onStepSubmit = (where: string) => {} }) => {
       <h2 className="w-100 text-center mb-5">What would you like to do?</h2>
 
       <div className="d-flex w-100 justify-content-around mt-5 mb-4">
-        <div className={`button primary text-white flex-1 mr-3 ml-5`} onClick={() => onStepSubmit("swap")}>
+        <div className={`button primary flex-1 mr-3 ml-5`} onClick={() => onStepSubmit("swap")}>
           Bridge Tokens
         </div>
         {!storedConstants.isSupernovaNetwork ? (
-          <div className={`button accent text-white flex-1 mr-5 ml-3`} onClick={() => onStepSubmit("liquidityStaking")}>
+          <div className={`button accent flex-1 mr-5 ml-3`} onClick={() => onStepSubmit("liquidityStaking")}>
             Liquidity Staking
           </div>
         ) : (

@@ -456,7 +456,7 @@ const LiquidityStakingStep = ({ onStepSubmit = () => {} }) => {
           )}
         </div>
 
-        <div className={`button primary text-white mt-5`}>
+        <div className={`button primary mt-5`}>
           Stake LP Token
           <input className="ghost-over cursor-pointer" type="submit" name="submitButton"></input>
         </div>
