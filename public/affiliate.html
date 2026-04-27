@@ -1,46 +1,174 @@
-<html></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self';" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="robots" content="noindex" />
+  <title>Accept Referral · Zenon Bridge</title>
+  <style>
+    :root {
+      --bg: #0a0a0b; --surface: #111113; --border: #1f1f23;
+      --text: #fff; --muted: #8b8b90; --accent: #00d166;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--muted);
+      font: 16px -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: grid; place-items: center;
+    }
+    main { width: 100%; max-width: 560px; padding: 32px 24px; }
+    h1 {
+      color: var(--text); margin: 0 0 16px;
+      font: 600 28px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      letter-spacing: -0.01em; line-height: 1.1;
+    }
+    p { line-height: 1.55; margin: 0 0 12px; }
+    .wallet {
+      display: block; margin: 20px 0; padding: 16px;
+      border: 1px solid var(--border); background: var(--surface);
+      border-radius: 12px; word-break: break-all;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 13px; color: var(--text);
+    }
+    .wallet small {
+      color: var(--muted); display: block; margin-bottom: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      font: 600 15px -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 12px 24px; border-radius: 999px;
+      border: 1px solid transparent; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn.primary { background: var(--accent); color: var(--bg); }
+    .btn.primary:hover { filter: brightness(1.08); }
+    .btn.secondary { background: transparent; border-color: var(--border); color: var(--text); }
+    .btn.secondary:hover { background: var(--surface); }
+    .note { margin-top: 20px; font-size: 13px; color: var(--muted); }
+    .error { color: #ff6b6b; }
+    .done { color: var(--accent); }
+    code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: var(--text); }
+  </style>
+</head>
+<body>
+<main id="root"></main>
 <script>
-  const getReferralAddress = () => {
-    const mangledCode = localStorage.getItem("znn-referral-code");
-    if (mangledCode) {
-      return mangledCode;
-    } else {
-      return "";
+  // Public encoding key used to mangle wallet addresses into hex referral codes.
+  // This is NOT a secret — it ships in every visitor's bundle. It exists only to
+  // obfuscate the wallet in the URL. Decoding requires the same key.
+  const MANGLING_KEY = "UjFpyVLBUHC";
+  const STORAGE_KEY  = "znn-referral-code";
+
+  // Decode hex(wallet XOR repeatingKey(MANGLING_KEY)) back to the source wallet.
+  // Returns null if the input is malformed or the result is not a valid bech32 ZNN address.
+  function deMangle(hex) {
+    if (!hex || typeof hex !== "string" || hex.length === 0 || hex.length % 2 !== 0) return null;
+    let out = "";
+    for (let i = 0; i < hex.length / 2; i++) {
+      const byte = parseInt(hex.substr(i * 2, 2), 16);
+      if (Number.isNaN(byte)) return null;
+      out += String.fromCharCode(byte ^ MANGLING_KEY.charCodeAt(i % MANGLING_KEY.length));
     }
-  };
-
-  const setReferralCodeAddress = (mangledCode) => {
-    if (mangledCode) {
-      return localStorage.setItem("znn-referral-code", mangledCode);
-    } else {
-      throw "Unable to set referral code";
-    }
-  };
-
-  console.log("Setting affiliate code");
-
-  const urlParams = new URLSearchParams(window.location.search);
-  console.log("urlParams", urlParams);
-
-  const referralCode = urlParams.get("referral") || "";
-  console.log("referralCode", referralCode);
-
-  const originURL = urlParams.get("originURL") || "";
-  console.log("originURL", originURL);
-
-  if (referralCode) {
-    console.log("__New referral code detected", referralCode);
-    if (!getReferralAddress()?.length) {
-      console.log("__Using: ", referralCode);
-      setReferralCodeAddress(referralCode || "");
-    } else {
-      console.log("Detected existing referral code: ", getReferralAddress());
-      console.log("Using the existing one", getReferralAddress());
-    }
+    return /^z1[a-z0-9]{38}$/.test(out) ? out : null;
   }
 
-  if (originURL?.length) {
-    console.log("__originURL", originURL);
-    window.location.replace(originURL);
+  // HTML-escape user-controlled strings before injecting into innerHTML.
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (c) => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+    ));
   }
+
+  function render() {
+    const root = document.getElementById("root");
+    const params = new URLSearchParams(window.location.search);
+    const incomingHex    = params.get("referral");
+    const incomingWallet = incomingHex ? deMangle(incomingHex) : null;
+    const existingHex    = localStorage.getItem(STORAGE_KEY);
+    const existingWallet = existingHex ? deMangle(existingHex) : null;
+
+    // Fast path: incoming matches the already-accepted referral. Nothing to consent to.
+    // Bounce to bridge home. The destination is hard-coded same-origin — no
+    // attacker-controlled redirect target, so this does not reintroduce the
+    // originURL exploit primitive. Replace before render so there's no UI flash.
+    if (incomingWallet && incomingWallet === existingWallet) {
+      window.location.replace("/");
+      return;
+    }
+
+    // Path A: visitor opened /affiliate.html with no referral param. Show manage view.
+    if (!incomingHex) {
+      root.innerHTML = `
+        <h1>Manage referral</h1>
+        ${existingWallet
+          ? `<p>Your browser is currently set to credit referral commission on this bridge to:</p>
+             <span class="wallet"><small>Active referral</small>${esc(existingWallet)}</span>`
+          : `<p>No referral is currently active in this browser.</p>`
+        }
+        <div class="actions">
+          ${existingWallet ? `<button class="btn secondary" id="clear">Remove referral</button>` : ""}
+          <a class="btn primary" href="/">Continue to bridge</a>
+        </div>`;
+      const clear = document.getElementById("clear");
+      if (clear) clear.addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+      });
+      return;
+    }
+
+    // Path B: referral param present but invalid (malformed hex, or decodes to a non-address).
+    if (!incomingWallet) {
+      root.innerHTML = `
+        <h1>Invalid referral</h1>
+        <p class="error">The referral link is malformed and was not stored.</p>
+        <p>If you were given this link, ask the sender to share it again.</p>
+        <div class="actions"><a class="btn secondary" href="/">Continue to bridge</a></div>`;
+      return;
+    }
+
+    // Path C: valid incoming referral. Show the wallet to the user. Require an explicit click to set.
+    root.innerHTML = `
+      <h1>Accept referral?</h1>
+      <p>Someone shared a referral link with you. If you accept, this address will earn a small affiliate commission on your future swaps on this bridge:</p>
+      <span class="wallet"><small>Referrer wallet</small>${esc(incomingWallet)}</span>
+      ${existingWallet
+        ? `<p class="note">Your browser already has an active referral for <code>${esc(existingWallet)}</code>. Accepting will replace it.</p>`
+        : ""
+      }
+      <div class="actions">
+        <button class="btn primary" id="accept">Accept referral</button>
+        <button class="btn secondary" id="decline">Decline</button>
+      </div>
+      <p class="note">No commission is taken from your swap amount; affiliate fees are paid from the bridge protocol's own fee share.</p>`;
+
+    const accept = document.getElementById("accept");
+    if (accept) accept.addEventListener("click", () => {
+      // Storage write happens HERE — inside an explicit click handler — and only here.
+      localStorage.setItem(STORAGE_KEY, incomingHex);
+      root.innerHTML = `
+        <h1>Referral set</h1>
+        <p class="done">Active referral for <code>${esc(incomingWallet)}</code>.</p>
+        <div class="actions"><a class="btn primary" href="/">Continue to bridge</a></div>`;
+    });
+    const decline = document.getElementById("decline");
+    if (decline) decline.addEventListener("click", () => {
+      // No storage modification on decline.
+      root.innerHTML = `
+        <h1>Declined</h1>
+        <p>No referral was set. Your browser's existing state is unchanged.</p>
+        <div class="actions"><a class="btn secondary" href="/">Continue to bridge</a></div>`;
+    });
+  }
+
+  render();
 </script>
+</body>
+</html>
