@@ -554,15 +554,6 @@ export const getReferralAddress = () => {
   }
 };
 
-export const setReferralCodeAddress = (address: string) => {
-  const mangledCode = mangleReferralCode(address);
-  if (mangledCode) {
-    return localStorage.setItem("znn-referral-code", mangledCode);
-  } else {
-    throw "Unable to mangle referral code";
-  }
-};
-
 export const openSafelyInNewTab = (url: string): void => {
   const newWindow = window.open(url, "_blank", "noopener,noreferrer");
   if (newWindow) newWindow.opener = null;
